@@ -12,7 +12,7 @@ agenda_model.selectAll = (callback) => {
 };
 
 agenda_model.select = (datos, callback) => {
-    database.query(`SELECT id,nombre, direccion, lat, lon FROM agencia WHERE id = ${datos.id}`,
+    database.query(`SELECT id,nombre, direccion, lat, lon FROM agencia WHERE id = '${datos.id}'`,
         (error, result) => {
             if (!!error) {
                 callback("Error al obtener datos de la base de datos " + error, false);
@@ -23,7 +23,7 @@ agenda_model.select = (datos, callback) => {
 
 agenda_model.insert = (datos, callback) => {
     database.query(`INSERT INTO agencia(nombre, direccion, lat, lon)
-                    VALUES (${datos.nombre}, ${datos.direccion}, ${datos.lat}, ${datos.lon});`,
+                    VALUES ('${datos.nombre}', '${datos.direccion}', '${datos.lat}', '${datos.lon}');`,
         (error, result) => {
             if (!!error) {
                 callback("Error al obtener datos de la base de datos " + error, false);
@@ -34,8 +34,8 @@ agenda_model.insert = (datos, callback) => {
 
 
 agenda_model.update = (datos, callback) => {
-    database.query(`UPDATE agencia SET nombre = ${datos.nombre}, direccion = ${datos.direccion}, 
-                    lat = ${datos.lat}, lon = ${datos.lon} WHERE id = ${datos.id};`,
+    database.query(`UPDATE agencia SET nombre = '${datos.nombre}', direccion = '${datos.direccion}', 
+                    lat = '${datos.lat}', lon = '${datos.lon} 'WHERE id = '${datos.id}';`,
         (error, result) => {
             if (!!error) {
                 callback("Error al obtener datos de la base de datos " + error, false);
@@ -45,7 +45,7 @@ agenda_model.update = (datos, callback) => {
 };
 
 agenda_model.delete = (datos, callback) => {
-    database.query(`DELETE FROM agencia WHERE id = ${datos.id};`,
+    database.query(`DELETE FROM agencia WHERE id = '${datos.id}';`,
         (error, result) => {
             if (!!error) {
                 callback("Error al obtener datos de la base de datos " + error, false);

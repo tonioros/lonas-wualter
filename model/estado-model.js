@@ -11,7 +11,7 @@ estado_model.selectAll = (callback) => {
 };
 
 estado_model.select = (datos, callback) => {
-    database.query(`select nombre_estado, tipo_estado from estado WHERE id = ${datos.id}`,
+    database.query(`select nombre_estado, tipo_estado from estado WHERE id = '${datos.id}'`,
         (error, result) => {
             if (!!error)
                 callback("Error al obtener datos de la base de datos " + error, false);
@@ -20,7 +20,7 @@ estado_model.select = (datos, callback) => {
 };
 
 estado_model.insert = (datos, callback) => {
-    database.query(`INSERT INTO estado(nombre_estado, tipo_estado) VALUES (${datos.nombre_estado}, ${datos.tipo_estado});`,
+    database.query(`INSERT INTO estado(nombre_estado, tipo_estado) VALUES ('${datos.nombre_estado}', '${datos.tipo_estado}');`,
         (error, result) => {
             if (!!error)
                 callback("Error al obtener datos de la base de datos " + error, false);
@@ -30,7 +30,7 @@ estado_model.insert = (datos, callback) => {
 
 
 estado_model.update = (datos, callback) => {
-    database.query(`UPDATE estado SET nombre_estado = ${datos.nombre_estado}, tipo_estado = ${datos.tipo_estado} WHERE id = ${datos.id};`,
+    database.query(`UPDATE estado SET nombre_estado = '${datos.nombre_estado}', tipo_estado = '${datos.tipo_estado}' WHERE id = '${datos.id}'`,
         (error, result) => {
             if (!!error)
                 callback("Error al obtener datos de la base de datos " + error, false);
@@ -39,7 +39,7 @@ estado_model.update = (datos, callback) => {
 };
 
 estado_model.delete = (datos, callback) => {
-    database.query(`DELETE FROM estado WHERE id = ${datos.id};`,
+    database.query(`DELETE FROM estado WHERE id = '${datos.id}'`,
         (error, result) => {
             if (!!error)
                 callback("Error al obtener datos de la base de datos " + error, false);
