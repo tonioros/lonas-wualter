@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const   router = express.Router();
 const estado_model = require('../../model/estado-model');
 
 router.get('/', (req, res) => {

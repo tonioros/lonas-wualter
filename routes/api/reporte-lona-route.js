@@ -1,6 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const reporte_lona_model = require('../../model/reporte-lona-model');
+const multer = require('multer');
+const path = require('path');
+const handleError = (err, res) => {
+    res.status(500).contentType("application/json").end(`{"upload": false}`);
+};
+const path_upload = path.join(__dirname, '../../public/images');
+const upload = multer({
+    dest: path_upload,
+});
 
 router.get('/', (req, res) => {
     reporte_lona_model.selectAll((datos, isSucessful) => {
@@ -74,7 +83,6 @@ router.post('/', (req, res) => {
     const input = {
         lona_id: req.body.lona_id,
         observaciones: req.body.observaciones,
-        file_path: req.body.file_path,
         lat: req.body.lat,
         lon: req.body.lon,
         agenda_id: req.body.agenda_id
@@ -94,5 +102,39 @@ router.post('/', (req, res) => {
         }
     })
 });
+
+router.post("/:id/upload", upload.single("file" /* name attribute of <file> element in your form */),
+    (req, res) => {
+        const tempPath = req.file.path;
+        const reporte_id = req.params.id;
+        const targetPath = path.join(__dirname, `../../public/images/IMG_${reporte_id}_${Date.now()}.png`);
+
+        if (path.extname(req.file.originalname).toLowerCase() === ".png") {
+            fs.rename(tempPath, targetPath, err => {
+                if (err) return handleError(err, res);
+                const datos = {
+                    id: reporte_id,
+                    path_file: targetPath,
+                };
+                reporte_lona_model.upload_image(datos, (resp, err) => {
+                    if (err) {
+                        res.json({upload: true});
+                        console.error(err);
+                    }
+                    res.json({upload: true});
+                })
+            });
+
+        } else {
+            fs.unlink(tempPath, err => {
+                if (err) return handleError(err, res);
+
+                res.status(403)
+                    .contentType("text/plain")
+                    .end("Only .png files are allowed!");
+            });
+        }
+    }
+);
 
 module.exports = router;

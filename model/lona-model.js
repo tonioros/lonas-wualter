@@ -14,8 +14,21 @@ lona_model.select = (datos, callback) => {
     database.query(`select id, descripcion, tamanio from lona WHERE id = '${datos.id}'`,
         (error, result) => {
             if (!!error)
-                callback("Error al obtener datos de la base de datos " + error, false);
-            callback(result.rows, true);
+                callback("Error al obten" +
+                    "er datos de la base de datos " + error, false);
+
+            database.query(`select es.nombre_estado, es.tipo_estado
+                            from estado es
+                            inner join lona_especificacion le on le.estado_id = es.id
+                            where le.lona_id = ${datos.id}`, (error, detalle) => {
+                const finalResult = {
+                    ...result.rows[0],
+                    detalle_lona: detalle.rows,
+                };
+
+                callback(finalResult, true);
+            });
+
         });
 };
 

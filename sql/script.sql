@@ -41,6 +41,7 @@ CREATE TABLE reporte_lona (
 
 CREATE USER josros WITH PASSWORD '123';
 
+
 GRANT ALL PRIVILEGES ON TABLE usuario TO gfcrimzwpnopxy;
 GRANT ALL PRIVILEGES ON TABLE lona TO gfcrimzwpnopxy;
 GRANT ALL PRIVILEGES ON TABLE estado TO gfcrimzwpnopxy;
