@@ -3,6 +3,8 @@ const router = express.Router();
 const reporte_lona_model = require('../../model/reporte-lona-model');
 const multer = require('multer');
 const path = require('path');
+const fs = require("fs");
+
 const handleError = (err, res) => {
     res.status(500).contentType("application/json").end(`{"upload": false}`);
 };
@@ -104,24 +106,26 @@ router.post('/', (req, res) => {
 });
 
 router.post("/:id/upload", upload.single("file" /* name attribute of <file> element in your form */),
-    (req, res) => {
-        const tempPath = req.file.path;
-        const reporte_id = req.params.id;
+    (request, res) => {
+        const tempPath = request.file.path;
+        const reporte_id = request.params.id;
         const targetPath = path.join(__dirname, `../../public/images/IMG_${reporte_id}_${Date.now()}.png`);
+        const file_name = `/images/IMG_${reporte_id}_${Date.now()}.png`;
 
-        if (path.extname(req.file.originalname).toLowerCase() === ".png") {
+        if (path.extname(request.file.originalname).toLowerCase() === ".png") {
             fs.rename(tempPath, targetPath, err => {
                 if (err) return handleError(err, res);
                 const datos = {
                     id: reporte_id,
-                    path_file: targetPath,
+                    path_file: "http://"  + request.headers.host + file_name,
                 };
                 reporte_lona_model.upload_image(datos, (resp, err) => {
                     if (err) {
-                        res.json({upload: true});
+                        res.json({upload: false});
                         console.error(err);
+                    } else {
+                        res.json({upload: true});
                     }
-                    res.json({upload: true});
                 })
             });
 

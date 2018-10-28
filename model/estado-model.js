@@ -24,7 +24,8 @@ estado_model.insert = (datos, callback) => {
         (error, result) => {
             if (!!error)
                 callback("Error al obtener datos de la base de datos " + error, false);
-            callback(result.rows, true);
+            else
+                callback(result.rows, true);
         });
 };
 
