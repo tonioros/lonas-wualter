@@ -39,6 +39,12 @@ CREATE TABLE reporte_lona (
     lon DECIMAL(9,9) NULL
 );
 
+CREATE TABLE agencia_lona (
+    id SERIAL  PRIMARY KEY NOT NULL,
+    agenda_id INT NOT NULL,
+    lona_id INT NOT NULL
+);
+
 CREATE USER josros WITH PASSWORD '123';
 
 

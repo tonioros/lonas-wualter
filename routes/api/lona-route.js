@@ -3,19 +3,37 @@ const router = express.Router();
 const lona_model = require('../../model/lona-model');
 
 router.get('/', (req, res) => {
-    lona_model.selectAll((datos, isSucessful) => {
-        if (isSucessful) {
-            const response = {res: datos, access: true,};
-            res.json(response);
-        } else {
-            const error = {
-                res: datos,
-                error_code: 1,
-                access: false,
-            };
-            res.json(error);
-        }
-    })
+    if (!!req.query.agencia) {
+        const input = {id: req.query.agencia};
+        lona_model.selectByAgencia(input, (datos, isSucessful) => {
+            if (isSucessful) {
+                const response = {res: datos, access: true,};
+                res.json(response);
+            } else {
+                const error = {
+                    res: datos,
+                    error_code: 1,
+                    access: false,
+                };
+                res.json(error);
+            }
+        })
+    } else {
+        lona_model.selectAll((datos, isSucessful) => {
+            if (isSucessful) {
+                const response = {res: datos, access: true,};
+                res.json(response);
+            } else {
+                const error = {
+                    res: datos,
+                    error_code: 1,
+                    access: false,
+                };
+                res.json(error);
+            }
+        })
+    }
+
 });
 
 router.get('/:id', (req, res) => {
@@ -34,6 +52,7 @@ router.get('/:id', (req, res) => {
         }
     })
 });
+
 
 router.post('/', (req, res) => {
     const input = {

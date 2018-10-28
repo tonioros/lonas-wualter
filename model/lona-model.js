@@ -6,7 +6,8 @@ lona_model.selectAll = (callback) => {
         (error, result) => {
             if (!!error)
                 callback("Error al obtener datos de la base de datos " + error, false);
-            callback(result.rows, true);
+            else
+                callback(result.rows, true);
         });
 };
 
@@ -30,6 +31,18 @@ lona_model.select = (datos, callback) => {
             });
 
         });
+};
+
+lona_model.selectByAgencia = (datos, callback) => {
+    database.query(`select ln.id, ln.descripcion, ln.tamanio from lona ln
+                    inner join agencia_lona ag on ag.lona_id = ln.id
+                    where ag.agenda_id = '${datos.id}'`,
+        (error, result) => {
+            if (!!error)
+                callback("Error al obtener datos de la base de datos " + error, false);
+            else
+                callback(result.rows, true);
+    });
 };
 
 lona_model.insert = (datos, callback) => {
