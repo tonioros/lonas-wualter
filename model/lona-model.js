@@ -14,22 +14,21 @@ lona_model.selectAll = (callback) => {
 lona_model.select = (datos, callback) => {
     database.query(`select id, descripcion, tamanio from lona WHERE id = '${datos.id}'`,
         (error, result) => {
-            if (!!error)
-                callback("Error al obten" +
-                    "er datos de la base de datos " + error, false);
-
-            database.query(`select es.nombre_estado, es.tipo_estado
+            if (!!error) {
+                callback("Error al obtener datos de la base de datos " + error, false);
+            } else {
+                database.query(`select es.nombre_estado, es.tipo_estado
                             from estado es
                             inner join lona_especificacion le on le.estado_id = es.id
                             where le.lona_id = ${datos.id}`, (error, detalle) => {
-                const finalResult = {
-                    ...result.rows[0],
-                    detalle_lona: detalle.rows,
-                };
+                    const finalResult = {
+                        ...result.rows[0],
+                        detalle_lona: detalle.rows,
+                    };
 
-                callback(finalResult, true);
-            });
-
+                    callback(finalResult, true);
+                });
+            }
         });
 };
 
@@ -38,11 +37,22 @@ lona_model.selectByAgencia = (datos, callback) => {
                     inner join agencia_lona ag on ag.lona_id = ln.id
                     where ag.agenda_id = '${datos.id}'`,
         (error, result) => {
-            if (!!error)
+            if (!!error) {
                 callback("Error al obtener datos de la base de datos " + error, false);
-            else
-                callback(result.rows, true);
-    });
+            } else {
+                database.query(`select es.nombre_estado, es.tipo_estado
+                            from estado es
+                            inner join lona_especificacion le on le.estado_id = es.id
+                            where le.lona_id = ${datos.id}`, (error, detalle) => {
+                    const finalResult = {
+                        ...result.rows[0],
+                        detalle_lona: detalle.rows,
+                    };
+
+                    callback(finalResult, true);
+                });
+            }
+        });
 };
 
 lona_model.insert = (datos, callback) => {
