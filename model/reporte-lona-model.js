@@ -45,7 +45,28 @@ reporte_lona_model.insert = (datos, callback) => {
             if (!!error) {
                 callback("Error al obtener datos de la base de datos " + error, false);
             } else  {
-                callback({}, true);
+                database.query(`SELECT id FROM reporte_lona 
+                                WHERE lona_id = '${datos.lona_id}'
+                                AND observaciones = '${datos.observaciones}' 
+                                AND lat = '${datos.lat}' AND lon = '${datos.lon}' 
+                                AND agenda_id = '${datos.agenda_id}' `, (err,  result) => {
+                    const id = result.rows[0].id;
+
+                    let  i = 1;
+                    for (let detalle of datos.reporte_detalle) {
+                        database.query(`INSERT INTO reporte_detalle(estado_id, reporte_id)
+                                        VALUES('${detalle.estado_id}',  '${id}')`, (err, result_detalle) => {
+                            if (err) {
+                                callback({}, false);
+                            } else {
+                                if (+(datos.reporte_detalle.length) === i) {
+                                    callback({}, true);
+                                }
+                            }
+                            i++;
+                        });
+                    }
+                });
             }
         });
 };

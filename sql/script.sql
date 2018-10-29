@@ -39,6 +39,13 @@ CREATE TABLE reporte_lona (
     lon DECIMAL(9,9) NULL
 );
 
+CREATE TABLE reporte_detalle (
+    id SERIAL PRIMARY KEY NOT NULL,
+    estado_id INT NOT NULL,
+    reporte_id INT NOT NULL
+);
+
+
 CREATE TABLE agencia_lona (
     id SERIAL  PRIMARY KEY NOT NULL,
     agenda_id INT NOT NULL,

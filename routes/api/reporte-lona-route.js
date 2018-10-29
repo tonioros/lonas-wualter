@@ -87,7 +87,8 @@ router.post('/', (req, res) => {
         observaciones: req.body.observaciones,
         lat: req.body.lat,
         lon: req.body.lon,
-        agenda_id: req.body.agenda_id
+        agenda_id: req.body.agenda_id,
+        reporte_detalle: req.body.reporte_detalle,
     };
 
     reporte_lona_model.insert(input, (datos, isSucessful) => {
