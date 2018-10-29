@@ -17,7 +17,7 @@ lona_model.select = (datos, callback) => {
             if (!!error) {
                 callback("Error al obtener datos de la base de datos " + error, false);
             } else {
-                database.query(`select es.nombre_estado, es.tipo_estado
+                database.query(`select es.id, es.nombre_estado, es.tipo_estado
                             from estado es
                             inner join lona_especificacion le on le.estado_id = es.id
                             where le.lona_id = ${datos.id}`, (error, detalle) => {
@@ -40,7 +40,7 @@ lona_model.selectByAgencia = (datos, callback) => {
             if (!!error) {
                 callback("Error al obtener datos de la base de datos " + error, false);
             } else {
-                database.query(`select es.nombre_estado, es.tipo_estado
+                database.query(`select es.id, es.nombre_estado, es.tipo_estado
                             from estado es
                             inner join lona_especificacion le on le.estado_id = es.id
                             where le.lona_id = ${datos.id}`, (error, detalle) => {
