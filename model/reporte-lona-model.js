@@ -60,7 +60,7 @@ reporte_lona_model.insert = (datos, callback) => {
                                 callback({}, false);
                             } else {
                                 if (+(datos.reporte_detalle.length) === i) {
-                                    callback({}, true);
+                                    callback({id}, true);
                                 }
                             }
                             i++;

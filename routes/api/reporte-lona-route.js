@@ -118,7 +118,7 @@ router.post("/:id/upload", upload.single("file" /* name attribute of <file> elem
                 if (err) return handleError(err, res);
                 const datos = {
                     id: reporte_id,
-                    path_file: "http://"  + request.headers.host + file_name,
+                    path_file: "https://"  + request.headers.host + file_name,
                 };
                 reporte_lona_model.upload_image(datos, (resp, err) => {
                     if (err) {
