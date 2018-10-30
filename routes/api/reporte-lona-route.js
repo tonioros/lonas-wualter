@@ -113,32 +113,21 @@ router.post("/:id/upload", upload.single("file" /* name attribute of <file> elem
         const targetPath = path.join(__dirname, `../../public/images/IMG_${reporte_id}_${Date.now()}.png`);
         const file_name = `/images/IMG_${reporte_id}_${Date.now()}.png`;
 
-        if (path.extname(request.file.originalname).toLowerCase() === ".png") {
-            fs.rename(tempPath, targetPath, err => {
-                if (err) return handleError(err, res);
-                const datos = {
-                    id: reporte_id,
-                    path_file: "https://"  + request.headers.host + file_name,
-                };
-                reporte_lona_model.upload_image(datos, (resp, err) => {
-                    if (err) {
-                        res.json({upload: false});
-                        console.error(err);
-                    } else {
-                        res.json({upload: true});
-                    }
-                })
-            });
-
-        } else {
-            fs.unlink(tempPath, err => {
-                if (err) return handleError(err, res);
-
-                res.status(403)
-                    .contentType("text/plain")
-                    .end("Only .png files are allowed!");
-            });
-        }
+        fs.rename(tempPath, targetPath, err => {
+            if (err) return handleError(err, res);
+            const datos = {
+                id: reporte_id,
+                path_file: "https://" + request.headers.host + file_name,
+            };
+            reporte_lona_model.upload_image(datos, (resp, err) => {
+                if (err) {
+                    res.json({upload: false});
+                    console.error(err);
+                } else {
+                    res.json({upload: true});
+                }
+            })
+        });
     }
 );
 
