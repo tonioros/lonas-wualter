@@ -2,7 +2,12 @@ const database = require('../database/psql-connection');
 const reporte_lona_model = {};
 
 reporte_lona_model.selectAll = (callback) => {
-    database.query(`select lona_id, observaciones, file_path, lat, lon, agenda_id from reporte_lona`,
+    database.query(`select rl.lona_id, lo.descripcion, lo.tamanio,
+                    rl.agenda_id, ag.nombre, ag.direccion,
+                    rl.observaciones, rl.file_path, rl.lat, rl.lon
+                    from reporte_lona rl
+                    inner join lona lo on lo.id = rl.lona_id
+                    inner join agencia ag on  ag.id  = rl.agenda_id`,
         (error, result) => {
             if (!!error)
                 callback("Error al obtener datos de la base de datos " + error, false);
